@@ -24,7 +24,7 @@ export class Post {
   @Column({ unique: true, length: 255, type: 'varchar', nullable: true })
   slug: string;
 
-  @Column({ type: 'string', length: 255 })
+  @Column({ type: 'varchar' })
   authorId: string;
 
   @Column({ type: 'timestamp', nullable: true })
@@ -37,6 +37,6 @@ export class Post {
   updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.posts)
-  @JoinColumn({ name: 'authorId' })
+  @JoinColumn({ name: 'author_id' })
   author: User;
 }
