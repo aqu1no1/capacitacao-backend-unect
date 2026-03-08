@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { v7 as uuidv7 } from 'uuid';
+import { Comment } from 'src/comments/entity/comment.entity';
 
 @Entity('users')
 export class User {
@@ -31,4 +32,7 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.authorId)
   posts: Post[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 }
