@@ -30,7 +30,7 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Post, (post) => post.authorId)
+  @OneToMany(() => Post, (post) => post.author)
   posts: Post[];
 
   @OneToMany(() => Comment, (comment) => comment.user)

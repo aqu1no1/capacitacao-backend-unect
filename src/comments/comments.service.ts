@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -8,24 +8,29 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Injectable()
 export class CommentsService {
+  private readonly logger = new Logger(CommentsService.name);
+
   constructor(
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
   ) {}
 
   async createComment({
+    userId,
     createCommentDto,
   }: {
+    userId: string;
     createCommentDto: CreateCommentDto;
   }): Promise<Comment> {
     try {
       const comment = this.commentRepository.create({
         ...createCommentDto,
         id: uuidv7(),
+        user: { id: userId },
       });
       return this.commentRepository.save(comment);
     } catch (error) {
-      console.error('Error creating comment:', error);
+      this.logger.error('Error creating comment:', error);
       throw error;
     }
   }
@@ -61,7 +66,7 @@ export class CommentsService {
         { ...updateCommentDto },
       );
     } catch (error) {
-      console.error('Error updating comment:', error);
+      this.logger.error('Error updating comment:', error);
     }
   }
 
@@ -77,7 +82,7 @@ export class CommentsService {
 
       await this.commentRepository.delete({ id: commentId });
     } catch (error) {
-      console.error('Error deleting comment:', error);
+      this.logger.error('Error deleting comment:', error);
     }
   }
 }

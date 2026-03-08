@@ -61,7 +61,7 @@ export class PostsService {
     try {
       const createPost = this.postsRepository.create({
         ...createPostDto,
-        authorId: userId,
+        author: { id: userId },
         id: uuidv7(),
       });
       await this.postsRepository.save(createPost);
@@ -83,7 +83,7 @@ export class PostsService {
   }): Promise<void> {
     const post = await this.findPostById({ id: postId });
 
-    if (userId !== post.authorId) {
+    if (userId !== post.author.id) {
       throw new ConflictException('Apenas o autor do post pode editar.');
     }
 
@@ -105,7 +105,7 @@ export class PostsService {
   }): Promise<void> {
     const post = await this.findPostById({ id: postId });
 
-    if (post.authorId !== userId) {
+    if (post.author.id !== userId) {
       throw new ConflictException('Apenas o autor do post pode remover.');
     }
 
@@ -117,7 +117,10 @@ export class PostsService {
   }
 
   private async findPostById({ id }: { id: string }): Promise<Post> {
-    const post = await this.postsRepository.findOne({ where: { id: id } });
+    const post = await this.postsRepository.findOne({
+      where: { id: id },
+      relations: ['author'],
+    });
 
     if (!post) {
       throw new NotFoundException('Nao foi encontrado nenhum post no sistema.');

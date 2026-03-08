@@ -32,9 +32,6 @@ export class Post {
   })
   slug?: string;
 
-  @Column({ type: 'varchar', length: '36', nullable: true })
-  authorId?: string;
-
   @CreateDateColumn()
   createdAt: Date;
 
