@@ -11,7 +11,7 @@ export class RegisterDto {
   email: string;
 
   @IsString()
-  @MinLength(8, { message: 'Senha deve ter no mínimo 8 caracteres' })
+  @MinLength(6, { message: 'Senha deve ter no mínimo 6 caracteres' })
   @IsNotEmpty({ message: 'Senha é obrigatória' })
   password: string;
 }

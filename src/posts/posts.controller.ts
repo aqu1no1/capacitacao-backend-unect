@@ -7,12 +7,16 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PaginationDto } from 'src/common/pagination/dto/paginated.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
+import { JwtAuthGuard } from 'src/auth/guard/auth.guard';
+import { User } from 'src/auth/decorators/user.decorator';
 
+@UseGuards(JwtAuthGuard)
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
@@ -27,25 +31,22 @@ export class PostsController {
     return this.postsService.findOnePost({ id });
   }
 
-  @Post(':userId')
-  createPost(
-    @Param('userId') userId: string,
-    @Body() createPostDto: CreatePostDto,
-  ) {
+  @Post()
+  createPost(@User('id') userId: string, @Body() createPostDto: CreatePostDto) {
     return this.postsService.createPost({ userId, createPostDto });
   }
 
-  @Patch(':userId/:id')
+  @Patch(':id')
   updatePost(
-    @Param('userId') userId: string,
+    @User('id') userId: string,
     @Param('id') postId: string,
     @Body() updatePostDto: UpdatePostDto,
   ) {
     return this.postsService.updatePost({ userId, postId, updatePostDto });
   }
 
-  @Delete(':userId/:id')
-  removePost(@Param('userId') userId: string, @Param('id') postId: string) {
+  @Delete(':id')
+  removePost(@User('id') userId: string, @Param('id') postId: string) {
     return this.postsService.removePost({ userId, postId });
   }
 }

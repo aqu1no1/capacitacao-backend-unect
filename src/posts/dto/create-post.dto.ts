@@ -1,11 +1,4 @@
-import { Type } from 'class-transformer';
-import {
-  IsDate,
-  IsNotEmpty,
-  IsString,
-  IsUUID,
-  MinLength,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class CreatePostDto {
   @IsNotEmpty()
@@ -13,20 +6,13 @@ export class CreatePostDto {
   title: string;
 
   @IsString()
+  @IsOptional()
   @MinLength(50, {
     message: 'Content must be at least 50 characters long',
   })
-  content: string;
+  content?: string;
 
   @IsString()
-  slug: string;
-
-  @IsDate()
-  @Type(() => Date)
-  createdAtPost: Date;
-
-  @IsNotEmpty()
-  @IsString()
-  @IsUUID()
-  authorId: string;
+  @IsOptional()
+  slug?: string;
 }

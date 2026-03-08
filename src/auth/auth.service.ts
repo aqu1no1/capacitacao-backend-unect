@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
@@ -7,6 +7,8 @@ import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
@@ -19,19 +21,21 @@ export class AuthService {
       throw new UnauthorizedException('Usuário não encontrado');
     }
 
-    const passwordValidation = await bcrypt.compare(
-      plaintextPassword,
-      user.password,
-    );
+    try {
+      const passwordValidation = await bcrypt.compare(
+        plaintextPassword,
+        user.password,
+      );
 
-    if (!passwordValidation) {
-      throw new UnauthorizedException('Senha inválida');
+      if (!passwordValidation) {
+        throw new UnauthorizedException('Senha inválida');
+      }
+    } catch (error) {
+      this.logger.error('Erro no bcrypt:', error);
+      throw error;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _password, ...userData } = user;
-
-    return userData;
+    return user;
   }
 
   async login({ user }: { user: LoginDto }) {
