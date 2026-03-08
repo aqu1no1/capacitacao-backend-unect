@@ -9,6 +9,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { v7 as uuidv7 } from 'uuid';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -41,8 +43,16 @@ export class UsersService {
       throw new ConflictException('Ja existe esse email cadastrado no sistema');
     }
 
+    const { password, ...userWithoutPassword } = createUserDto;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     try {
-      const createdUser = this.userRepository.create(createUserDto);
+      const createdUser = this.userRepository.create({
+        ...userWithoutPassword,
+        id: uuidv7(),
+        password: hashedPassword,
+      });
       await this.userRepository.save(createdUser);
     } catch (error) {
       console.error(error);
