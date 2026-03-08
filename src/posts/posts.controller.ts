@@ -6,7 +6,9 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
+import { PaginationDto } from 'src/common/pagination/dto/paginated.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
@@ -16,8 +18,8 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  findAllPosts() {
-    return this.postsService.findAllPosts();
+  findAllPosts(@Query() paginationDto: PaginationDto) {
+    return this.postsService.findAllPosts({ paginationDto });
   }
 
   @Get(':id')
@@ -25,25 +27,25 @@ export class PostsController {
     return this.postsService.findOnePost({ id });
   }
 
-  @Post(':id')
+  @Post(':userId')
   createPost(
-    @Param('id') userId: string,
+    @Param('userId') userId: string,
     @Body() createPostDto: CreatePostDto,
   ) {
     return this.postsService.createPost({ userId, createPostDto });
   }
 
-  @Patch(':id')
+  @Patch(':userId/:id')
   updatePost(
-    @Param('id') userId: string,
+    @Param('userId') userId: string,
     @Param('id') postId: string,
     @Body() updatePostDto: UpdatePostDto,
   ) {
     return this.postsService.updatePost({ userId, postId, updatePostDto });
   }
 
-  @Delete(':id')
-  removePost(@Param('id') userId: string, @Param('id') postId: string) {
+  @Delete(':userId/:id')
+  removePost(@Param('userId') userId: string, @Param('id') postId: string) {
     return this.postsService.removePost({ userId, postId });
   }
 }
