@@ -5,30 +5,33 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { v7 as uuidv7 } from 'uuid';
 
 @Entity('posts')
 export class Post {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn({ type: 'varchar', length: '36', name: 'id' })
   id: string = uuidv7();
 
-  @Column({ length: 255, type: 'varchar' })
+  @Column({ length: 255, type: 'varchar', name: 'title' })
   title: string;
 
-  @Column({ type: 'varchar', length: 500, nullable: true })
-  content: string;
+  @Column({ type: 'varchar', length: 255, nullable: true, name: 'content' })
+  content?: string;
 
-  @Column({ unique: true, length: 255, type: 'varchar', nullable: true })
-  slug: string;
+  @Column({
+    unique: true,
+    length: 255,
+    type: 'varchar',
+    nullable: true,
+    name: 'slug',
+  })
+  slug?: string;
 
-  @Column({ type: 'varchar' })
-  authorId: string;
-
-  @Column({ type: 'timestamp', nullable: true })
-  createdAtPost: Date;
+  @Column({ type: 'varchar', length: '36', nullable: true })
+  authorId?: string;
 
   @CreateDateColumn()
   createdAt: Date;

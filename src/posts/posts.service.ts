@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { v7 as uuidv7 } from 'uuid';
 
 @Injectable()
 export class PostsService {
@@ -38,6 +39,7 @@ export class PostsService {
       const createPost = this.postsRepository.create({
         ...createPostDto,
         authorId: userId,
+        id: uuidv7(),
       });
       await this.postsRepository.save(createPost);
       return createPost;
