@@ -1,98 +1,289 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🚀 Capacitação Backend - NestJS (UNECT)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este projeto faz parte da **capacitação backend da UNECT**, com o objetivo de desenvolver uma **API RESTful de Blog** utilizando **NestJS**, **TypeORM** e **PostgreSQL**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+A aplicação permite **gerenciamento de usuários, autenticação com JWT, criação de posts e comentários**, seguindo boas práticas de arquitetura backend.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# 🧰 Tecnologias Utilizadas
 
-## Project setup
+* **Node.js**
+* **NestJS**
+* **TypeScript**
+* **PostgreSQL**
+* **TypeORM**
+* **JWT (Json Web Token)**
+* **bcrypt**
+* **Docker**
+* **class-validator**
 
-```bash
-$ npm install
+---
+
+# 🏗 Arquitetura do Projeto
+
+O projeto segue a arquitetura modular proposta pelo **NestJS**.
+
+```
+src
+ ├── auth
+ ├── users
+ ├── posts
+ ├── comments
+ ├── database
+ ├── common
+ │   └── pagination
 ```
 
-## Compile and run the project
+Cada módulo contém:
 
-```bash
-# development
-$ npm run start
+* **Controller** → recebe requisições HTTP
+* **Service** → regra de negócio
+* **Entity** → representação da tabela no banco
+* **DTO** → validação de dados
 
-# watch mode
-$ npm run start:dev
+---
 
-# production mode
-$ npm run start:prod
+# 🔐 Autenticação
+
+O sistema utiliza **JWT para autenticação**.
+
+Fluxo:
+
+1. Usuário realiza cadastro
+2. Senha é criptografada com **bcrypt**
+3. Usuário realiza login
+4. API retorna um **access_token**
+5. Token é utilizado para acessar rotas protegidas
+
+---
+
+# 👤 Módulo de Usuários
+
+Funcionalidades implementadas:
+
+* Criar usuário
+* Buscar usuários
+* Buscar usuário por ID
+* Atualizar usuário
+* Deletar usuário
+
+---
+
+# 📝 Módulo de Posts
+
+Funcionalidades:
+
+* Criar post
+* Listar posts
+* Buscar post por ID
+* Atualizar post
+* Deletar post
+* Paginação de posts
+
+Relacionamento:
+
+```
+User 1 --- N Posts
 ```
 
-## Run tests
+---
 
-```bash
-# unit tests
-$ npm run test
+# 💬 Módulo de Comentários
 
-# e2e tests
-$ npm run test:e2e
+Funcionalidades:
 
-# test coverage
-$ npm run test:cov
+* Criar comentário
+* Listar comentários
+* Buscar comentário
+* Atualizar comentário
+* Deletar comentário
+
+Relacionamento:
+
+```
+User 1 --- N Comments
+Post 1 --- N Comments
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+# 📦 Instalação do Projeto
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Clone o repositório:
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```
+git clone https://github.com/seu-repo.git
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Entre na pasta:
 
-## Resources
+```
+cd capacitacao-backend-unect
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+Instale as dependências:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```
+npm install
+```
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# 🐳 Banco de Dados com Docker
 
-## Stay in touch
+Subir o banco PostgreSQL:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```
+docker-compose up -d
+```
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+# ⚙️ Variáveis de Ambiente
+
+Crie um arquivo `.env` baseado no `.env.example`.
+
+Exemplo:
+
+```
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USER=postgres
+DATABASE_PASSWORD=postgres
+DATABASE_NAME=unect_db
+
+JWT_SECRET=secret
+```
+
+---
+
+# 🚀 Rodando o Projeto
+
+Modo desenvolvimento:
+
+```
+npm run start:dev
+```
+
+---
+
+# 📡 Principais Rotas da API
+
+## Auth
+
+### Registrar usuário
+
+```
+POST /auth/register
+```
+
+Body:
+
+```
+{
+ "name": "Mauricio",
+ "email": "mauricio@gmail.com",
+ "password": "123456"
+}
+```
+
+---
+
+### Login
+
+```
+POST /auth/login
+```
+
+Retorno:
+
+```
+{
+ "id": "uuid",
+ "access_token": "jwt_token"
+}
+```
+
+---
+
+# 📄 Paginação
+
+Exemplo:
+
+```
+GET /posts?page=1&limit=10
+```
+
+Retorno:
+
+```
+{
+ data: [],
+ meta: {
+        "total": 12,
+        "page": 2,
+        "limit": 10,
+        "lastPage": 2
+ }
+}
+```
+# 📬 Coleção do Postman
+
+O projeto possui uma coleção do **Postman** com todas as rotas da API já configuradas.
+
+Para importar:
+
+1. Abra o **Postman**
+2. Clique em **Import**
+3. Selecione o arquivo:
+
+```id="y0d0h6"
+postman/capacitacao-backend-unect.postman_collection.json
+```
+
+A coleção contém as seguintes rotas:
+
+### Auth
+
+* `POST /auth/register`
+* `POST /auth/login`
+
+### Users
+
+* `GET /users`
+* `GET /users/:id`
+* `PATCH /users/:id`
+* `DELETE /users/:id`
+
+### Posts
+
+* `POST /posts`
+* `GET /posts`
+* `GET /posts/:id`
+* `PATCH /posts/:id`
+* `DELETE /posts/:id`
+
+### Comments
+
+* `POST /comments`
+* `GET /comments`
+* `PATCH /comments/:id`
+* `DELETE /comments/:id`
+
+
+
+
+---
+
+# 📚 Referências
+
+* https://docs.nestjs.com
+* https://typeorm.io
+* https://jwt.io
+
+---
+
+# 👨‍💻 Autor
+
+Projeto desenvolvido durante a **Capacitação Backend da UNECT**.
